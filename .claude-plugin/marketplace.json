@@ -10,12 +10,12 @@
   },
   "plugins": [
     {
-      "name": "everyday-skills",
-      "description": "General-purpose skills for day-to-day work",
+      "name": "vorpmi",
+      "description": "A contrarian chat that refuses whatever you propose, in a single dry, grounded voice",
       "version": "0.1.0",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/example-skill"]
+      "skills": ["./skills/vorpmi"]
     }
   ]
 }

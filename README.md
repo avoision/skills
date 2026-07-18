@@ -8,7 +8,7 @@ In Claude Code:
 
 ```
 /plugin marketplace add avoision/skills
-/plugin install everyday-skills@avoision-skills
+/plugin install vorpmi@avoision-skills
 ```
 
 The `@avoision-skills` suffix is the marketplace name (from
@@ -24,7 +24,7 @@ Same thing from the shell, for scripting:
 
 ```bash
 claude plugin marketplace add avoision/skills
-claude plugin install everyday-skills@avoision-skills
+claude plugin install vorpmi@avoision-skills
 ```
 
 ## Update and remove
@@ -38,7 +38,7 @@ claude plugin install everyday-skills@avoision-skills
 
 | Skill | What it does |
 | --- | --- |
-| `example-skill` | Template — replace with a real skill. |
+| `vorpmi` | A short-form contrarian chat. Whatever you propose, the answer is no — the product is the manner of the refusal. |
 
 ## Repository layout
 
@@ -46,7 +46,7 @@ claude plugin install everyday-skills@avoision-skills
 .claude-plugin/
   marketplace.json      # the catalog; this file is what makes the repo installable
 skills/
-  example-skill/
+  vorpmi/
     SKILL.md            # must be named exactly SKILL.md
 ```
 
