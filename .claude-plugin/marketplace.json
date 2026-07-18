@@ -1,0 +1,21 @@
+{
+  "name": "avoision-skills",
+  "owner": {
+    "name": "Felix Jung",
+    "email": "felixjung@gmail.com"
+  },
+  "metadata": {
+    "description": "Felix Jung: Agent Skills for Claude",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "everyday-skills",
+      "description": "General-purpose skills for day-to-day work",
+      "version": "0.1.0",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/example-skill"]
+    }
+  ]
+}
