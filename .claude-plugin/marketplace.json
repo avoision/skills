@@ -16,6 +16,14 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/vorpmi"]
+    },
+    {
+      "name": "lodging-compare",
+      "description": "Find and compare places to stay for a specific trip across hotels, short-lets, aparthotels and hostels — scored against your criteria, ranked by fit, returned as JSON or a styled HTML report",
+      "version": "0.1.0",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/lodging-compare"]
     }
   ]
 }

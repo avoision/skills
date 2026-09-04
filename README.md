@@ -9,6 +9,7 @@ In Claude Code:
 ```
 /plugin marketplace add avoision/skills
 /plugin install vorpmi@avoision-skills
+/plugin install lodging-compare@avoision-skills
 ```
 
 The `@avoision-skills` suffix is the marketplace name (from
@@ -39,6 +40,7 @@ claude plugin install vorpmi@avoision-skills
 | Skill | What it does |
 | --- | --- |
 | `vorpmi` | A short-form contrarian chat. Whatever you propose, the answer is no — the product is the manner of the refusal. |
+| `lodging-compare` | Finds places to stay for a specific trip across hotels, short-lets, aparthotels and hostels, scores them against your criteria, and commits to a ranked opinion. Read-only — it never books anything. |
 
 ## Repository layout
 
@@ -48,6 +50,11 @@ claude plugin install vorpmi@avoision-skills
 skills/
   vorpmi/
     SKILL.md            # must be named exactly SKILL.md
+  lodging-compare/
+    SKILL.md
+    references/         # loaded on demand, not at startup
+eval/
+  lodging-compare/      # verification + cost harness; not installed with the skill
 ```
 
 Each entry under `plugins` in `marketplace.json` is a **bundle** users install as

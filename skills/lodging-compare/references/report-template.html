@@ -1,0 +1,654 @@
+<!--
+  lodging-compare — report template.
+
+  This is the house style. Use it VERBATIM: same CSS, same JS, same class
+  names. Do not invent a per-destination palette or pick different fonts —
+  consistency is the point, and copying costs far fewer tokens than designing.
+
+  Fill in content only. Everything below the CSS is a worked example of the
+  markup each part expects.
+
+  The panel is for shortlisting only — save, remove, clear. It deliberately
+  has NO email, copy, or share action. Exporting a shortlist is the user's or
+  the calling agent's business, not this skill's.
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<style>
+:root {
+    --bg:        #0e1621;
+    --bg-card:   #131f30;
+    --border:    rgba(197,150,58,0.18);
+    --gold:      #c5963a;
+    --gold-dim:  rgba(197,150,58,0.35);
+    --ivory:     #f0ece2;
+    --ivory-dim: rgba(240,236,226,0.55);
+    --warn:      #b85c3b;
+    --warn-bg:   rgba(184,92,59,0.12);
+    --ok:        #4d9e6e;
+    --ok-bg:     rgba(77,158,110,0.12);
+    --note:      #7b9ec9;
+    --note-bg:   rgba(123,158,201,0.10);
+    --serif:     'Cormorant Garamond', Georgia, serif;
+    --sans:      'DM Sans', system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ivory);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 15% 0%, rgba(197,150,58,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 40% at 85% 100%, rgba(100,130,180,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 60px 32px 100px;
+  }
+
+  /* ── header ── */
+  .masthead {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 40px;
+    margin-bottom: 56px;
+  }
+  .eyebrow {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  h1 em { font-style: italic; color: var(--gold); }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 13px;
+    color: var(--ivory-dim);
+    margin-top: 18px;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .meta-item::before {
+    content: '';
+    display: inline-block;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .meta-note {
+    margin-top: 14px;
+    font-size: 12.5px;
+    color: var(--ivory-dim);
+    font-style: italic;
+  }
+
+  /* ── section divider ── */
+  .section-header {
+    margin: 64px 0 36px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-header:first-of-type {
+    margin-top: 0;
+  }
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(24px, 4vw, 34px);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-meta {
+    font-size: 13px;
+    color: var(--ivory-dim);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .section-meta span {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .section-meta span::before {
+    content: '';
+    display: inline-block;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--gold-dim);
+    flex-shrink: 0;
+  }
+  .section-note {
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: var(--ivory-dim);
+    font-style: italic;
+  }
+
+  /* ── card ── */
+  .listing {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .listing-head {
+    padding: 24px 30px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .listing-num {
+    font-family: var(--serif);
+    font-size: 38px;
+    font-weight: 300;
+    color: var(--gold-dim);
+    line-height: 1;
+    margin-bottom: 4px;
+    font-style: italic;
+  }
+  .listing-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .listing-sub {
+    font-size: 11px;
+    color: var(--ivory-dim);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 2px;
+  }
+  .badge-superhost { background: rgba(197,150,58,0.15); color: var(--gold);      border: 1px solid var(--gold-dim); }
+  .badge-warn      { background: var(--warn-bg);         color: var(--warn);      border: 1px solid rgba(184,92,59,0.3); }
+  .badge-ok        { background: var(--ok-bg);           color: var(--ok);        border: 1px solid rgba(77,158,110,0.3); }
+  .badge-fav       { background: rgba(240,236,226,0.06); color: var(--ivory-dim); border: 1px solid rgba(240,236,226,0.12); }
+  .badge-new       { background: var(--note-bg);         color: var(--note);      border: 1px solid rgba(123,158,201,0.25); }
+
+  .listing-body { padding: 20px 30px; }
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 13px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .price-total { font-family: var(--serif); font-size: 32px; font-weight: 300; }
+  .price-night { font-size: 16px; color: var(--ivory-dim); }
+  .price-was   { font-size: 15px; color: var(--ivory-dim); text-decoration: line-through; }
+  .btn-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 16px;
+  }
+  .btn-listing {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    border: 1px solid var(--gold-dim);
+    padding: 6px 14px;
+    border-radius: 2px;
+    background: rgba(197,150,58,0.06);
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .btn-listing:hover {
+    background: rgba(197,150,58,0.14);
+    border-color: var(--gold);
+    color: var(--ivory);
+  }
+  .btn-listing svg {
+    flex-shrink: 0;
+    opacity: 0.75;
+  }
+  .rating { font-size: 16px; color: var(--ivory-dim); }
+
+  .summary {
+    font-size: 14.5px;
+    line-height: 1.78;
+    color: var(--ivory);
+    margin-bottom: 20px;
+    padding-left: 14px;
+    border-left: 2px solid var(--gold-dim);
+  }
+
+  /* ── criteria ── */
+  .criteria {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    padding: 16px 0 2px;
+    border-top: 1px solid var(--border);
+  }
+  .criterion { display: flex; flex-direction: column; gap: 4px; }
+  .criterion-label { font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+  .criterion-value { font-size: 13px; letter-spacing: 0.03em; }
+  .dot-fill  { color: var(--gold); }
+  .dot-empty { color: rgba(197,150,58,0.2); }
+  .criterion-divider {
+    width: 1px;
+    align-self: stretch;
+    background: var(--border);
+    margin: 2px 4px;
+    flex-shrink: 0;
+  }
+
+  .notice {
+    margin-top: 13px;
+    padding: 8px 13px;
+    font-size: 13px;
+    border-radius: 0 2px 2px 0;
+    border-left-width: 3px;
+    border-left-style: solid;
+  }
+  .notice-warn { background: var(--warn-bg); color: var(--warn); border-color: var(--warn); }
+  .notice-info { background: var(--note-bg); color: var(--note); border-color: var(--note); }
+
+  /* ── section recommendation ── */
+  .section-pick {
+    margin: 40px 0 0;
+    padding: 26px 30px;
+    border: 1px solid rgba(197,150,58,0.25);
+    background: rgba(197,150,58,0.04);
+    border-radius: 2px;
+  }
+  .section-pick-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .section-pick-text {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* ── overall recommendation ── */
+  .overall-pick {
+    margin-top: 72px;
+    padding: 36px 32px;
+    border: 1px solid var(--gold);
+    background: rgba(197,150,58,0.07);
+    position: relative;
+  }
+  .overall-pick::before {
+    content: '★';
+    position: absolute;
+    top: -14px;
+    left: 32px;
+    background: var(--bg);
+    padding: 0 10px;
+    color: var(--gold);
+    font-size: 16px;
+  }
+  .overall-pick-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .overall-pick-text {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 300;
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  .footer {
+    margin-top: 56px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--ivory-dim);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* ── favourites ── */
+  .fav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ivory-dim);
+    background: transparent;
+    border: 1px solid rgba(240,236,226,0.15);
+    padding: 6px 14px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .fav-btn:hover {
+    color: var(--gold);
+    border-color: var(--gold-dim);
+    background: rgba(197,150,58,0.06);
+  }
+  .fav-btn.saved {
+    color: var(--gold);
+    border-color: var(--gold);
+    background: rgba(197,150,58,0.12);
+  }
+  .fav-btn.saved .fav-icon { content: '♥'; }
+  .fav-icon { font-size: 12px; line-height: 1; }
+
+  /* ── favourites panel ── */
+  #fav-panel {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #0b1320;
+    border-top: 1px solid var(--gold-dim);
+    z-index: 100;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.5);
+  }
+  #fav-panel.visible { transform: translateY(0); }
+  #fav-panel-inner {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 18px 32px 22px;
+  }
+  #fav-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  #fav-panel-title {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  #fav-count-badge {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    background: rgba(197,150,58,0.15);
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+  #fav-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+    min-height: 28px;
+  }
+  .fav-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--ivory);
+    background: rgba(240,236,226,0.06);
+    border: 1px solid rgba(240,236,226,0.12);
+    padding: 4px 10px 4px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .fav-chip-section {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.8;
+  }
+  .fav-chip-price {
+    font-size: 10px;
+    color: var(--ivory-dim);
+  }
+  .fav-chip-remove {
+    background: none;
+    border: none;
+    color: var(--ivory-dim);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    padding: 0 2px;
+    transition: color 0.15s;
+  }
+  .fav-chip-remove:hover { color: var(--warn); }
+  #fav-panel-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  #btn-clear-fav {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ivory-dim);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 0;
+    transition: color 0.15s;
+  }
+  #btn-clear-fav:hover { color: var(--warn); }
+  #fav-empty-msg {
+    font-size: 12px;
+    color: var(--ivory-dim);
+    font-style: italic;
+  }
+  /* nudge body so panel doesn't overlap last content when visible */
+  body.panel-open { padding-bottom: 140px; }
+</style>
+
+<!-- ============ MASTHEAD ============ -->
+<header class="masthead">
+    <p class="eyebrow">Airbnb &amp; Hotel Research Report · Combined</p>
+    <h1>Paris Accommodations<br><em>Mai–Juin 2026</em></h1>
+    <div class="meta-row">
+      <span class="meta-item">May 29 – June 3, 2026 &nbsp;(5 nights)</span>
+      <span class="meta-item">6 guests</span>
+      <span class="meta-item">18 listings total</span>
+      <span class="meta-item">Airbnb Budget $2,500–$4,500</span>
+      <span class="meta-item">Hotel Budget $3,500 max</span>
+    </div>
+    <p class="meta-note">Two Airbnb searches run live via Playwright (Sections 1 &amp; 2). Section 3 adds a curated hotel search using the same criteria — safety, noise, and metro proximity — with a $3,500 total budget cap. Airbnb listings marked ⚠️ exceed the stated budget range.</p>
+  </header>
+
+<!-- ============ SECTION HEADER ============ -->
+<!-- section header -->
+
+<!-- ============ ONE LISTING CARD ============ -->
+<article class="listing" data-section="4BR Airbnb" data-id="1" data-price="$3,382" data-title="The Loft — Charenton-le-Pont — 4BR Duplex with Patio">
+    <div class="listing-head">
+      <div class="listing-num">1</div>
+      <h2 class="listing-title">The Loft — Charenton-le-Pont — 4BR Duplex with Patio</h2>
+      <div class="listing-sub">
+        Charenton-le-Pont &nbsp;·&nbsp; Near Bois de Vincennes &nbsp;·&nbsp; 4 bedrooms · 4 double beds · 4 baths
+        <span class="badge badge-superhost">Superhost</span>
+        <span class="badge badge-fav">Guest Favorite</span>
+        <span class="badge badge-ok">✓ In Budget</span>
+      </div>
+    </div>
+    <div class="listing-body">
+      <div class="price-row">
+        <span class="price-total">$3,382</span>
+        <span class="price-night">for 5 nights &nbsp;·&nbsp; ~$676/night</span>
+
+        <span class="rating">★ 4.94 &nbsp;(32 reviews)</span>
+      </div>
+      <p class="summary">A converted factory turned duplex loft, with a private outdoor patio, four proper double beds, and four bathrooms — the best bathroom-to-bedroom ratio in this entire report. Located in Charenton-le-Pont, a safe, leafy suburb one metro stop beyond Paris's edge, it's the only 4-bedroom listing within budget. Line 8 from the nearby Charenton-Écoles station reaches Bastille in 13 minutes and Opéra in about 20. The trade-off is clear: you're not in Paris proper, which means no wandering out to a boulangerie or spontaneous Marais café stops. But if your group plans to use the apartment as a home base for day trips rather than wanting to step out into the city at every turn, this is exceptional value — near Bois de Vincennes for morning runs, total quiet at night, and a genuinely striking living space. Best for groups who want comfort and space over address.</p>
+      <div class="btn-row">
+        <a class="btn-listing" href="https://www.airbnb.com/rooms/1057874233317300624?source_impression_id=p3_1775527221_P3HsCtcVFAO_s7CO&check_in=2026-05-29&guests=6&adults=5&check_out=2026-06-03&children=1" target="_blank">View on Airbnb &nbsp;<svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 10L10 1M10 1H3M10 1V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <button class="fav-btn" aria-label="Save to favourites" onclick="toggleFav(this)"><span class="fav-icon">♡</span><span class="fav-label">Save</span></button>
+      </div>
+      <div class="criteria">
+        <div class="criterion"><span class="criterion-label">Cost</span><span class="criterion-value">$3,382 total</span></div>
+        <div class="criterion"><span class="criterion-label">Metro</span><span class="criterion-value">~3 min · 13 min to Bastille</span></div>
+        <div class="criterion-divider"></div>
+        <div class="criterion"><span class="criterion-label">Safety</span><span class="criterion-value"><span class="dot-fill">●●●●●</span></span></div>
+        <div class="criterion"><span class="criterion-label">Noise</span><span class="criterion-value"><span class="dot-fill">●</span><span class="dot-empty">○○○○</span></span></div>
+        <div class="criterion"><span class="criterion-label">Tourists</span><span class="criterion-value"><span class="dot-fill">●</span><span class="dot-empty">○○○○</span></span></div>
+      </div>
+    </div>
+  </article>
+
+<!-- ============ SAVED-LISTINGS PANEL + SCRIPT ============ -->
+<script>
+    const favs = {};
+
+    function toggleFav(btn) {
+      const article = btn.closest('article');
+      const id      = article.dataset.id;
+      const title   = article.dataset.title;
+      const price   = article.dataset.price;
+      const section = article.dataset.section;
+      const anchor  = article.querySelector('a.btn-listing');
+      const url     = anchor ? anchor.href : '';
+
+      if (favs[id]) {
+        delete favs[id];
+        btn.classList.remove('saved');
+        btn.querySelector('.fav-icon').textContent = '♡';
+        btn.querySelector('.fav-label').textContent = 'Save';
+      } else {
+        favs[id] = { title, price, section, url };
+        btn.classList.add('saved');
+        btn.querySelector('.fav-icon').textContent = '♥';
+        btn.querySelector('.fav-label').textContent = 'Saved';
+      }
+      renderPanel();
+    }
+
+    function renderPanel() {
+      const keys = Object.keys(favs);
+      const panel = document.getElementById('fav-panel');
+      const list  = document.getElementById('fav-list');
+      const badge = document.getElementById('fav-count-badge');
+      const empty = document.getElementById('fav-empty-msg');
+
+      badge.textContent = keys.length + (keys.length === 1 ? ' saved' : ' saved');
+
+      if (keys.length === 0) {
+        panel.classList.remove('visible');
+        document.body.classList.remove('panel-open');
+        list.innerHTML = '';
+        list.appendChild(createEmptyMsg());
+        return;
+      }
+
+      panel.classList.add('visible');
+      document.body.classList.add('panel-open');
+
+      list.innerHTML = '';
+      keys.forEach(id => {
+        const f = favs[id];
+        const chip = document.createElement('div');
+        chip.className = 'fav-chip';
+        chip.innerHTML =
+          '<span class="fav-chip-section">' + f.section + '</span>' +
+          '<span>' + f.title + '</span>' +
+          '<span class="fav-chip-price">' + f.price + '</span>' +
+          '<button class="fav-chip-remove" aria-label="Remove" onclick="removeById(' + id + ')">×</button>';
+        list.appendChild(chip);
+      });
+    }
+
+    function createEmptyMsg() {
+      const span = document.createElement('span');
+      span.id = 'fav-empty-msg';
+      span.style.cssText = 'font-size:12px;color:var(--ivory-dim);font-style:italic';
+      span.textContent = 'No listings saved yet — click ♡ Save on any listing above.';
+      return span;
+    }
+
+    function removeById(id) {
+      delete favs[id];
+      // Un-toggle the button on the card
+      const article = document.querySelector('[data-id="' + id + '"]');
+      if (article) {
+        const btn = article.querySelector('.fav-btn');
+        if (btn) {
+          btn.classList.remove('saved');
+          btn.querySelector('.fav-icon').textContent = '♡';
+          btn.querySelector('.fav-label').textContent = 'Save';
+        }
+      }
+      renderPanel();
+    }
+
+    function clearAll() {
+      Object.keys(favs).forEach(id => removeById(id));
+    }
+</script>
