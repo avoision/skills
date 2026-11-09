@@ -1,0 +1,96 @@
+/* plan-review task tracking. Scoped to prt-* classes.
+ * Themable via :root variables (fallbacks shown): --review-font, --review-display-font, --review-mono,
+ * --review-ink, --review-muted, --review-border, --review-surface, --review-accent, --task-bar-track,
+ * and per status --task-<todo|progress|review|blocked|done> (text) / --task-<...>-bg (background). */
+.prt-pill, .prt-summary, .prt-popover {
+  font-family: var(--review-font, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif);
+}
+
+.prt-pill {
+  /* No overflow:hidden here: it would move the inline-block's baseline to its bottom edge and lift the pill.
+     0.18em re-centres the smaller pill text on the surrounding line. Long notes are shortened in tasks.js. */
+  display: inline-block; margin-right: 8px; padding: 0 8px; border-radius: 999px; vertical-align: 0.18em;
+  font: 600 11.5px/20px var(--review-font, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif);
+  white-space: nowrap;
+  background: var(--task-todo-bg, #eaeef2); color: var(--task-todo, #59636e);
+  transition: box-shadow .15s;
+}
+.prt-pill.prt-editable { cursor: pointer; }
+.prt-pill.prt-editable:hover { box-shadow: 0 0 0 1.5px currentColor; }
+
+.prt-in_progress { background: var(--task-progress-bg, #ddf4ff); color: var(--task-progress, #0969da); }
+.prt-review { background: var(--task-review-bg, #f3e8ff); color: var(--task-review, #8250df); }
+.prt-blocked { background: var(--task-blocked-bg, #fff1e5); color: var(--task-blocked, #bc4c00); }
+.prt-done { background: var(--task-done-bg, #dafbe1); color: var(--task-done, #1a7f37); }
+.prt-skipped { background: var(--task-todo-bg, #eaeef2); color: var(--task-todo, #8c959f); text-decoration: line-through; }
+
+.prt-bar {
+  display: inline-flex; flex: none; width: 100%; height: 7px; border-radius: 999px; overflow: hidden;
+  background: var(--task-bar-track, #d8dee4);
+}
+.prt-seg { display: block; height: 100%; transition: width .5s cubic-bezier(.2, .7, .2, 1); }
+.prt-seg-done { background: var(--task-done, #2da44e); }
+.prt-seg-review { background: var(--task-review, #a475f9); }
+.prt-seg-in_progress { background: var(--task-progress, #54aeff); }
+.prt-seg-blocked { background: var(--task-blocked, #fb8f44); }
+
+.prt-summary {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin: 0 0 30px; padding: 16px 20px;
+  background: var(--review-surface, #fff); border: 1px solid var(--review-border, #d8dee4); border-radius: 10px;
+  color: var(--review-ink, #1f2328); font-size: 14px;
+}
+.prt-summary .prt-bar { flex: 1 1 220px; height: 10px; }
+.prt-summary-title { font: 500 19px/1 var(--review-display-font, inherit); letter-spacing: -.01em; }
+.prt-summary-text { color: var(--review-muted, #59636e); }
+
+.prt-popover {
+  position: absolute; z-index: 2147483002; width: 264px; padding: 10px;
+  background: var(--review-surface, #fff); border: 1px solid var(--review-border, #d0d7de); border-radius: 9px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16); font-size: 13px; color: var(--review-ink, #1f2328);
+  animation: prt-pop .16s ease-out;
+}
+@keyframes prt-pop { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.prt-pop-title {
+  font-weight: 600; margin-bottom: 6px; font-size: 12.5px; color: var(--review-muted, #59636e);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.prt-pop-status {
+  display: block; width: 100%; text-align: left; padding: 5px 8px; margin: 1px 0;
+  border: none; border-radius: 5px; background: none; font: inherit; color: inherit; cursor: pointer;
+}
+.prt-pop-status:hover { background: var(--task-todo-bg, #f6f8fa); }
+.prt-pop-status.prt-current { background: var(--review-accent-soft, #ddf4ff); font-weight: 600; }
+.prt-pop-note {
+  width: 100%; margin-top: 6px; padding: 6px 8px; box-sizing: border-box;
+  border: 1px solid var(--review-border, #d0d7de); border-radius: 5px; font: inherit;
+  background: var(--review-surface, #fff); color: inherit;
+}
+.prt-pop-note:focus { outline: none; border-color: var(--review-accent, #0969da); }
+.prt-pop-error { color: #cf222e; font-size: 12px; margin-top: 4px; }
+.prt-pop-error:empty { display: none; }
+
+/* Implement popover (opened from the hover controls in review.js). */
+.prt-pop-hint { font-size: 12px; color: var(--review-muted, #59636e); margin-bottom: 4px; }
+textarea.prt-pop-note { resize: vertical; }
+.prt-pop-go {
+  display: block; width: 100%; margin-top: 8px; padding: 6px 8px; border: none; border-radius: 5px; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 600; background: var(--review-accent, #0969da); color: #fff;
+}
+
+/* Compact summary (data-task-summary="compact"): one small line, e.g. in a nav bar. */
+.prt-summary.prt-summary-compact {
+  display: inline-flex; flex-wrap: nowrap; gap: 8px; margin: 0; padding: 0; border: none; background: none;
+  font-size: 12.5px; white-space: nowrap;
+}
+.prt-summary-compact .prt-summary-title { display: none; }
+.prt-summary-compact .prt-bar { flex: none; width: 80px; height: 6px; }
+.prt-summary-compact .prt-summary-text { font-variant-numeric: tabular-nums; }
+
+/* Status dots, in the pill and the status picker. */
+.prt-dot { display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; vertical-align: 0.08em; }
+.prt-dot-todo { background: transparent; box-shadow: inset 0 0 0 1.5px var(--task-todo, #8c959f); }
+.prt-dot-in_progress { background: var(--task-progress, #0969da); }
+.prt-dot-review { background: var(--task-review, #8250df); }
+.prt-dot-blocked { background: var(--task-blocked, #bc4c00); }
+.prt-dot-done { background: var(--task-done, #1a7f37); }
+.prt-dot-skipped { background: var(--task-todo, #8c959f); opacity: .6; }

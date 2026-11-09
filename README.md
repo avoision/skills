@@ -10,6 +10,7 @@ In Claude Code:
 /plugin marketplace add avoision/skills
 /plugin install vorpmi@avoision-skills
 /plugin install lodging-compare@avoision-skills
+/plugin install plan-review@avoision-skills
 ```
 
 The `@avoision-skills` suffix is the marketplace name (from
@@ -41,6 +42,7 @@ claude plugin install vorpmi@avoision-skills
 | --- | --- |
 | `vorpmi` | A short-form contrarian chat. Whatever you propose, the answer is no — the product is the manner of the refusal. |
 | `lodging-compare` | Finds places to stay for a specific trip across hotels, short-lets, aparthotels and hostels, scores them against your criteria, and commits to a ranked opinion. Read-only — it never books anything. |
+| `plan-review` | Turns a plan Claude wrote into a local web page where you comment on any part, track task progress, and approve tasks one at a time with **Implement**. Python 3.8+, macOS or Linux. |
 
 ## Repository layout
 
@@ -53,6 +55,11 @@ skills/
   lodging-compare/
     SKILL.md
     references/         # loaded on demand, not at startup
+  plan-review/
+    SKILL.md
+    plan_review.py      # local server + CLI, stdlib only
+    assets/             # page template, review UI JS/CSS
+    tests/
 eval/
   lodging-compare/      # verification + cost harness; not installed with the skill
 ```

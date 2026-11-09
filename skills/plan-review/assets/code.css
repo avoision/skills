@@ -1,0 +1,37 @@
+/* plan-review code blocks (see code.js). Themable via :root variables (fallbacks shown): --code-keyword,
+ * --code-string, --code-comment, --code-number, --code-type, --code-fn, --code-line-number. */
+pre.pr-code { position: relative; }
+pre.pr-code > code { display: block; }
+
+.pr-code-line { display: block; min-height: 1.4em; border-radius: 3px; }
+.pr-code-src { white-space: pre; }
+.pr-code-ln {
+  display: inline-block; width: var(--pr-ln-width, 2ch); margin-right: 16px; text-align: right;
+  color: var(--code-line-number, #a0a7ae); user-select: none; -webkit-user-select: none;
+}
+
+.pr-tok-kw { color: var(--code-keyword, #cf222e); }
+.pr-tok-str { color: var(--code-string, #0a3069); }
+.pr-tok-com { color: var(--code-comment, #6e7781); font-style: italic; }
+.pr-tok-num, .pr-tok-lit { color: var(--code-number, #0550ae); }
+.pr-tok-type, .pr-tok-key { color: var(--code-type, #953800); }
+.pr-tok-fn { color: var(--code-fn, #8250df); }
+
+/* Language label: appears when hovering the block. Hovering the label targets the whole block for comments. */
+.pr-code-lang {
+  position: absolute; top: 6px; right: 8px; padding: 0 7px; border-radius: 4px;
+  font: 600 10.5px/1.7 var(--review-font, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  letter-spacing: .05em; text-transform: uppercase; color: var(--code-line-number, #8c959f);
+  background: inherit; box-shadow: 0 0 0 1px var(--review-border, #d0d7de);
+  opacity: 0; transition: opacity .15s;
+}
+pre.pr-code:hover .pr-code-lang { opacity: 1; }
+
+/* Live review states: a line is highlighted with a tint, not the dashed outline used for other blocks. */
+.pr-code-line.pr-hovered { outline: none; background: var(--review-accent-soft, rgba(9, 105, 218, .1)); }
+.pr-code-line.pr-flash { animation: pr-code-flash 1.4s ease-out; }
+@keyframes pr-code-flash { 0%, 30% { background: var(--review-accent-soft, rgba(9, 105, 218, .2)); } 100% { background: transparent; } }
+/* A whole-block comment marks only the left edge, so commented lines inside it still stand out. */
+pre.pr-code.pr-has-comment { background-image: none; }
+/* The 💬 for a code line: smaller, over the line number (positioned by review.js). */
+#pr-hover.pr-hover-line { width: 24px; height: 24px; line-height: 22px; font-size: 12px; }

@@ -24,6 +24,14 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/lodging-compare"]
+    },
+    {
+      "name": "plan-review",
+      "description": "Review, refine and carry out a plan through a local web page: comment on any part, track task progress, and approve tasks one at a time",
+      "version": "0.1.0",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/plan-review"]
     }
   ]
 }
